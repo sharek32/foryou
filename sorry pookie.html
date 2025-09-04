@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>For Pookie 💙 — Apology & Love</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1220;
+    --card: rgba(255,255,255,.08);
+    --stroke: rgba(255,255,255,.15);
+    --text:#eaf2ff;
+    --sub:#9bb4ff;
+    --accent:#69a8ff;
+    --accent-2:#7ed3ff;
+    --good:#7dffa0;
+    --glass: blur(10px);
+    --glow: 0 0 20px rgba(126,211,255,.35), 0 0 40px rgba(105,168,255,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background: radial-gradient(1200px 800px at 80% -10%, #172744 0%, transparent 60%),
+                          radial-gradient(900px 600px at -20% 110%, #0f1c33 0%, transparent 60%),
+                          var(--bg);
+    color:var(--text); font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow-x:hidden;
+  }
+  /* Floating hearts canvas */
+  #heartsCanvas{position:fixed; inset:0; z-index:0; pointer-events:none}
+
+  header{
+    position:sticky; top:0; z-index:2;
+    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+    background: linear-gradient(180deg, rgba(8,12,22,.7), rgba(8,12,22,.25));
+    border-bottom:1px solid var(--stroke);
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:20px}
+  h1{margin:8px 0 4px; font-weight:700; letter-spacing:.5px}
+  .sub{color:var(--sub); font-size:.95rem}
+
+  main{position:relative; z-index:1}
+  .grid{
+    display:grid; gap:22px;
+    grid-template-columns: repeat(12, 1fr);
+    padding:28px 20px 60px; max-width:1100px; margin:0 auto;
+  }
+  .card{
+    grid-column: span 12;
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.06));
+    border:1px solid var(--stroke);
+    border-radius:18px; padding:18px;
+    backdrop-filter: var(--glass); -webkit-backdrop-filter:var(--glass);
+    box-shadow: var(--glow);
+    position:relative; overflow:hidden;
+  }
+  @media (min-width:900px){
+    #card1{grid-column: span 6}
+    #card2{grid-column: span 6}
+    #card3{grid-column: span 12}
+  }
+  .card h2{margin:0 0 8px; font-size:1.25rem}
+  .hint{color:var(--sub); font-size:.9rem; margin-bottom:14px}
+
+  /* Buttons */
+  .btn{
+    --b: rgba(255,255,255,.2);
+    display:inline-flex; align-items:center; gap:10px;
+    padding:12px 16px; border-radius:12px;
+    border:1px solid var(--b);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    color:var(--text); font-weight:600; letter-spacing:.2px;
+    cursor:pointer; user-select:none; transition:.25s transform, .25s box-shadow, .25s background;
+    box-shadow: 0 6px 20px rgba(0,0,0,.25), 0 0 0 rgba(126,211,255,0);
+  }
+  .btn:hover{transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 18px rgba(126,211,255,.25)}
+  .btn.primary{background: linear-gradient(180deg, rgba(126,211,255,.3), rgba(105,168,255,.18)); border-color: rgba(126,211,255,.4)}
+  .btn.good{background: linear-gradient(180deg, rgba(125,255,160,.25), rgba(70,200,120,.2)); border-color: rgba(125,255,160,.45)}
+
+  /* Apology reveal */
+  .reveal{
+    min-height:170px; border-radius:14px; border:1px dashed rgba(255,255,255,.18);
+    padding:14px; display:flex; align-items:center; justify-content:center;
+    background: rgba(12,20,36,.55);
+  }
+  .line{font-size:1.1rem; text-align:center; line-height:1.5}
+  .type{display:inline-block; border-right:2px solid var(--accent); animation: caret 1s steps(1) infinite}
+  @keyframes caret{50%{border-color:transparent}}
+
+  /* Story */
+  .story{
+    display:grid; gap:12px; grid-template-columns: 1fr 1fr;
+  }
+  .story .btn{justify-content:center}
+  .story-log{
+    margin-top:10px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+    background: rgba(12,20,36,.45); font-size:.95rem; color:var(--sub)
+  }
+
+  /* Diary */
+  .diary{
+    margin-top:14px; display:grid; gap:12px;
+  }
+  .diary input, .diary textarea{
+    width:100%; padding:10px 12px; border-radius:10px;
+    background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+    color:var(--text); outline:none; transition:border .2s
+  }
+  .diary input:focus, .diary textarea:focus{border-color: rgba(126,211,255,.5)}
+  .note{
+    margin-top:10px; border-radius:16px; padding:18px;
+    background:
+      linear-gradient(transparent 23px, rgba(126,211,255,.22) 24px) repeat-y,
+      linear-gradient(90deg, rgba(255,120,120,.25) 0 2px, transparent 2px) 46px 0/1px 28px,
+      rgba(255,255,255,.06);
+    background-size: 100% 28px, 1px 28px, auto;
+    font-family: 'Sacramento', cursive; font-size:30px; line-height:1.35;
+    color:#fff; border:1px solid rgba(255,255,255,.18)
+  }
+
+  /* Meme */
+  .meme-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .meme-wrap canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  canvas{border-radius:14px; border:1px solid rgba(255,255,255,.12); background:#0a0f1c}
+
+  /* Audio control */
+  .audio-bar{
+    position:fixed; right:16px; bottom:16px; z-index:3; display:flex; gap:8px; align-items:center;
+    padding:8px 10px; border-radius:12px; background: rgba(255,255,255,.08); border:1px solid var(--stroke);
+    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  }
+  .tiny{font-size:.85rem; color:var(--sub)}
+  .pulse{ position:absolute; inset:auto auto -14px -14px; width:120px; height:120px; 
+    background: radial-gradient(circle at 50% 50%, rgba(126,211,255,.25), transparent 70%); 
+    filter: blur(12px); animation: pulse 4s ease-in-out infinite; pointer-events:none; opacity:.7}
+  @keyframes pulse{0%,100%{transform:scale(.9)}50%{transform:scale(1.05)}}
+  .tag{position:absolute; top:10px; right:12px; font-size:.8rem; color:var(--sub)}
+</style>
+</head>
+<body>
+<canvas id="heartsCanvas" aria-hidden="true"></canvas>
+
+<header>
+  <div class="wrap">
+    <h1>For Pookie 💙</h1>
+    <div class="sub">An apology website for you!!✨</div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <!-- Card 1: Interactive Apology Card -->
+    <section class="card" id="card1">
+      <div class="tag">Interactive Apology Card</div>
+      <div class="pulse"></div>
+      <h2>Unlock my heart 🔐💖</h2>
+      <div class="hint">Every click reveals another line.</div>
+      <div class="reveal"><div class="line" id="apologyLine">Click below to unlock my heart →</div></div>
+      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap">
+        <button class="btn primary" id="revealBtn">Unlock my heart →</button>
+        <button class="btn" id="resetReveal" title="Start over">↺ Reset</button>
+      </div>
+    </section>
+
+    <!-- Card 2: Choose Your Own Adventure + Diary -->
+    <section class="card" id="card2">
+      <div class="tag">Choose-Your-Own-Adventure 📖</div>
+      <h2>A teeny story where you always win</h2>
+      <div class="hint">Make a choice, Pookie ↓</div>
+      <div class="story" id="storyChoices"></div>
+      <div class="story-log" id="storyLog">”Do you forgive him?” — <em>Yes</em> or <em>Of course yes</em> 😇</div>
+
+      <!-- Diary generator -->
+      <div class="diary" id="diaryBlock" style="display:none">
+        <h3 style="margin:6px 0 0">Pookie’s Tiny Diary ✍️</h3>
+        <div class="hint">Answer a few, I’ll write the cutest note.</div>
+        <input id="yourName" placeholder="Your name (optional)">
+        <input id="specialDate" placeholder="Our special date (e.g., 2024-08-14)">
+        <input id="favThing" placeholder="Your favorite thing about me">
+        <input id="myNickname" placeholder="Nickname you call me (e.g., dork, munchkin)">
+        <textarea id="onePromise" rows="3" placeholder="One promise I’ll keep forever"></textarea>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn good" id="genDiary">Generate Diary Note</button>
+          <button class="btn" id="saveDiary" disabled>Save Note as Image</button>
+        </div>
+        <div class="note" id="noteOut" style="display:none"></div>
+        <canvas id="noteCanvas" width="1024" height="768" style="display:none"></canvas>
+      </div>
+    </section>
+
+    <!-- Card 3: Meme/Quote Generator -->
+    <section class="card" id="card3">
+      <div class="tag">Custom Meme / Quote Generator</div>
+      <h2>Fresh meme each refresh 😎</h2>
+      <div class="hint">Or press “Shuffle” for a new one.</div>
+      <div class="meme-wrap">
+        <canvas id="meme" width="1200" height="600" aria-label="Apology meme"></canvas>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn primary" id="newMeme">Shuffle Meme</button>
+          <button class="btn" id="downloadMeme">Download</button>
+        </div>
+        <div class="tiny">Tip: Memes and diary never upload anywhere—everything runs in your browser.</div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Audio (autoplays after first click/interaction) -->
+<div class="audio-bar">
+  <button class="btn" id="toggleAudio">▶ Play</button>
+  <div class="tiny">soft bg music</div>
+  <audio id="bgm" preload="auto" loop>
+    <source src="lovestory.mp4" type="audio/mpeg">
+    <!-- Fallback tip -->
+  </audio>
+</div>
+
+<script>
+/* ===========================
+   Utilities
+=========================== */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => [...document.querySelectorAll(sel)];
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* ===========================
+   Floating Hearts Particles (no library)
+=========================== */
+(function heartParticles(){
+  const canvas = $('#heartsCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, hearts=[];
+  const rand = (a,b)=>Math.random()*(b-a)+a;
+
+  function resize(){
+    W = canvas.width = innerWidth * devicePixelRatio;
+    H = canvas.height = innerHeight * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  }
+  addEventListener('resize', resize, {passive:true});
+  resize();
+
+  function makeHeart(x, y, size, vy){
+    return {
+      x, y, size,
+      vx: rand(-.4,.4),
+      vy: vy ?? rand(-1.4,-.6),
+      alpha: rand(.5, .9),
+      rotate: rand(0,Math.PI),
+      spin: rand(-.01,.01),
+      hue: rand(190,220) // blue-ish
+    }
+  }
+
+  function burst(x, y, n=14){
+    for(let i=0;i<n;i++){
+      hearts.push(makeHeart(x+rand(-20,20), y+rand(-10,10), rand(8,14), rand(-2,-.8)));
+    }
+  }
+  // gentle drizzle
+  setInterval(()=> {
+    hearts.push(makeHeart(rand(0, innerWidth), innerHeight+20, rand(6,12)));
+  }, 280);
+
+  function drawHeart(x,y,s,rot,hue,alpha){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(rot);
+    ctx.scale(s,s);
+    ctx.beginPath();
+    // parametric heart shape
+    for(let t=-Math.PI; t<=Math.PI; t+=0.05){
+      const xx = 16*Math.sin(t)**3;
+      const yy = - (13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+      if(t===-Math.PI) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
+    }
+    const grad = ctx.createLinearGradient(-16, -16, 16, 16);
+    grad.addColorStop(0, `hsla(${hue},85%,70%,${alpha})`);
+    grad.addColorStop(1, `hsla(${hue+20},85%,55%,${alpha*.9})`);
+    ctx.fillStyle = grad;
+    ctx.shadowColor = `hsla(${hue},90%,70%,.5)`;
+    ctx.shadowBlur = 16;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    hearts.forEach(h=>{
+      h.x += h.vx;
+      h.y += h.vy;
+      h.rotate += h.spin;
+      h.alpha -= .0018;
+      drawHeart(h.x, h.y, h.size/18, h.rotate, h.hue, Math.max(h.alpha,0));
+    });
+    hearts = hearts.filter(h=>h.y>-40 && h.alpha>0);
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // expose a small API for bursts
+  window.heartBurst = (el)=>{
+    const r = el.getBoundingClientRect();
+    burst(r.left + r.width/2, r.top + r.height/2, 18);
+  }
+})();
+
+/* ===========================
+   Interactive Apology Card
+=========================== */
+(() => {
+  const lines = [
+    "Hi Pookie… it’s me. I messed up. 🤍",
+    "I’m sorry for the hurt. You mean the world to me.",
+    "I choose you on the good days, bad days, every day. ♾️",
+    "If love had a password, it would be your name.",
+    "Sorry, pookie, I love you. 💙",
+    "Let me make it up to you with snacks and forehead kisses. 🥺👉👈",
+  ];
+  let idx = -1;
+
+  const lineEl = $('#apologyLine');
+  const btn = $('#revealBtn');
+  const reset = $('#resetReveal');
+
+  function typeText(text){
+    lineEl.innerHTML = '';
+    const span = document.createElement('span');
+    span.className='type';
+    lineEl.appendChild(span);
+    let i=0;
+    const step = () => {
+      span.textContent = text.slice(0, i++);
+      if(i<=text.length) requestAnimationFrame(step);
+      else span.classList.remove('type');
+    };
+    step();
+  }
+
+  async function nextLine(){
+    idx = Math.min(idx+1, lines.length-1);
+    typeText(lines[idx]);
+    heartBurst(btn);
+    // emphasize final line slightly
+    if(idx===lines.length-1){ btn.textContent = "Again? →"; }
+    else { btn.textContent = "Next →"; }
+  }
+
+  btn.addEventListener('click', nextLine);
+  reset.addEventListener('click', ()=>{
+    idx = -1;
+    $('#apologyLine').textContent = "Click below to unlock my heart →";
+    btn.textContent = "Unlock my heart →";
+    heartBurst(reset);
+  });
+})();
+
+/* ===========================
+   Choose-Your-Own-Adventure
+=========================== */
+(() => {
+  const story = {
+    start: {
+      text: "Do you forgive him?",
+      choices: [
+        {label:"Yes", next:"forgive"},
+        {label:"Of course Yes 😇", next:"forgive"}
+      ]
+    },
+    forgive:{
+      text: "Correct. Would you like snacks or cuddles first?",
+      choices:[
+        {label:"Snacks 🍫", next:"snacks"},
+        {label:"Cuddles 🤗", next:"cuddles"}
+      ]
+    },
+    snacks:{
+      text: "Delivering snacks… also, can we talk & reset our day?",
+      choices:[
+        {label:"Okay 💙", next:"form"},
+        {label:"Okay but add fries", next:"form"}
+      ]
+    },
+    cuddles:{
+      text: "Cuddle queue initiated. Also, tiny questionnaire?",
+      choices:[
+        {label:"Yesss", next:"form"},
+        {label:"Fine, but kiss first 😘", next:"form"}
+      ]
+    }
+  };
+
+  const choicesEl = $('#storyChoices');
+  const logEl = $('#storyLog');
+  const diary = $('#diaryBlock');
+
+  function render(nodeKey){
+    const node = story[nodeKey];
+    choicesEl.innerHTML = '';
+    node.choices.forEach(c=>{
+      const b = document.createElement('button');
+      b.className = 'btn';
+      b.textContent = c.label;
+      b.onclick = ()=>{
+        logEl.innerHTML = `${node.text} — <em>${c.label}</em>`;
+        if(c.next==='form'){ diary.style.display='grid'; choicesEl.innerHTML=''; }
+        else render(c.next);
+        heartBurst(b);
+      };
+      choicesEl.appendChild(b);
+    });
+  }
+  // init
+  render('start');
+})();
+
+/* ===========================
+   Diary Generator (cute note + canvas download)
+=========================== */
+(() => {
+  const gen = $('#genDiary');
+  const save = $('#saveDiary');
+  const note = $('#noteOut');
+  const canvas = $('#noteCanvas');
+
+  function wrapText(ctx, text, x, y, maxW, lineH){
+    const words = text.split(' ');
+    let line='', lines=[], curY=y;
+    for(let n=0;n<words.length;n++){
+      const test = line + words[n] + ' ';
+      if(ctx.measureText(test).width > maxW && n>0){
+        lines.push({text:line, y:curY});
+        line = words[n] + ' ';
+        curY += lineH;
+      }else line = test;
+    }
+    lines.push({text:line, y:curY});
+    return lines;
+  }
+
+  function makeDiaryText(){
+    const you = $('#yourName').value.trim() || 'Pookie';
+    const date = $('#specialDate').value.trim() || 'our forever day';
+    const fav = $('#favThing').value.trim() || 'your laugh';
+    const nick = $('#myNickname').value.trim() || 'my favorite human';
+    const promise = $('#onePromise').value.trim() || 'to choose you every day';
+    return `Dear ${you},\n\nToday (${date}) I wanted to say I’m sorry in the softest way.\nI love ${fav} and the way you call me ${nick}.\nHere’s my promise: ${promise}.\n\nLet’s write a kinder chapter tonight. 💙`;
+  }
+
+  gen.addEventListener('click', ()=>{
+    const text = makeDiaryText();
+    note.style.display='block';
+    note.textContent = text;
+    heartBurst(gen);
+    // enable save (draw to canvas in the background)
+    renderNoteCanvas(text);
+    save.disabled = false;
+  });
+
+  function renderNoteCanvas(text){
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    // background: soft blue page with lines + margin
+    const g = ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0, '#0b1427'); g.addColorStop(1, '#0d1a33');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+    // paper area
+    const pad = 64;
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    roundRect(ctx, pad, pad, W-2*pad, H-2*pad, 24, true, true);
+
+    // ruled lines
+    ctx.strokeStyle = 'rgba(126,211,255,0.22)'; ctx.lineWidth = 1;
+    for(let y=pad+70; y<H-pad; y+=40){
+      ctx.beginPath(); ctx.moveTo(pad+36, y); ctx.lineTo(W-pad-36, y); ctx.stroke();
+    }
+    // margin line
+    ctx.strokeStyle = 'rgba(255,120,120,0.35)';
+    ctx.beginPath(); ctx.moveTo(pad+46, pad+36); ctx.lineTo(pad+46, H-pad-36); ctx.stroke();
+
+    // title
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 42px Poppins, sans-serif';
+    ctx.fillText('Pookie’s Tiny Diary', pad+68, pad+60);
+
+    // text
+    ctx.font = '36px Sacramento, cursive';
+    ctx.fillStyle = '#eef7ff';
+    const lines = wrapText(ctx, text, pad+68, pad+110, W - pad*2 - 90, 46);
+    lines.forEach(l=>ctx.fillText(l.text, pad+68, l.y));
+  }
+
+  function roundRect(ctx, x, y, w, h, r, fill, stroke){
+    if (w < 2*r) r = w/2; if (h < 2*r) r = h/2;
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.arcTo(x+w, y,   x+w, y+h, r);
+    ctx.arcTo(x+w, y+h, x,   y+h, r);
+    ctx.arcTo(x,   y+h, x,   y,   r);
+    ctx.arcTo(x,   y,   x+w, y,   r);
+    ctx.closePath();
+    if (fill) ctx.fill(); if (stroke) ctx.stroke();
+  }
+
+  save.addEventListener('click', ()=>{
+    const link = document.createElement('a');
+    link.download = 'pookie-diary.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    heartBurst(save);
+  });
+})();
+
+/* ===========================
+   Meme / Quote Generator (Canvas)
+=========================== */
+(() => {
+  const quotes = [
+    ["SORRY POOKIE","I paused your show at the DRAMA part so we can watch it TOGETHER."],
+    ["BREAKING NEWS","Boyfriend found GUILTY of loving you excessively."],
+    ["PUBLIC SERVICE ANNOUNCEMENT","Snacks have been deployed. Cuddles ETA: immediate."],
+    ["I WAS WRONG","…but also stunningly handsome and very sorry."],
+    ["EMERGENCY UPDATE","Heart needs you. Send one (1) forgiveness."],
+    ["DEAL?","You forgive me ↔ I bring fries & infinite forehead kisses."]
+  ];
+  const bgStyles = [
+    {from:'#0d1b3a', to:'#1b3a6b'},
+    {from:'#0b2436', to:'#103b66'},
+    {from:'#081a2e', to:'#163b5f'},
+    {from:'#10213f', to:'#184c7a'}
+  ];
+
+  const canvas = $('#meme');
+  const ctx = canvas.getContext('2d');
+
+  function drawMeme(){
+    const [title, body] = quotes[Math.floor(Math.random()*quotes.length)];
+    const bg = bgStyles[Math.floor(Math.random()*bgStyles.length)];
+
+    // gradient background
+    const g = ctx.createLinearGradient(0,0, canvas.width, canvas.height);
+    g.addColorStop(0, bg.from); g.addColorStop(1, bg.to);
+    ctx.fillStyle = g; ctx.fillRect(0,0, canvas.width, canvas.height);
+
+    // sparkles
+    for(let i=0;i<70;i++){
+      const x = Math.random()*canvas.width, y=Math.random()*canvas.height;
+      const r = Math.random()*2+0.5; ctx.fillStyle = 'rgba(255,255,255,.25)';
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+    // top title
+    ctx.font = 'bold 80px Poppins, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.shadowColor='rgba(126,211,255,.6)'; ctx.shadowBlur=14;
+    ctx.fillText(title, canvas.width/2, 36);
+
+    // body text
+    ctx.shadowBlur=0;
+    ctx.font = 'bold 48px Poppins, sans-serif';
+    ctx.fillStyle = '#eaf2ff';
+    wrapBody(body, canvas.width/2, 200, canvas.width-140, 66);
+
+    // footer heart ribbon
+    const footer = '💙 sorry pookie 💙 love you 💙';
+    ctx.font = '28px Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,.8)';
+    ctx.textBaseline='bottom';
+    ctx.fillText(footer, canvas.width/2, canvas.height-34);
+  }
+
+  function wrapBody(text, cx, top, maxW, lineH){
+    const words = text.split(' ');
+    let line='', y=top;
+    ctx.textAlign='center';
+    for(let n=0; n<words.length; n++){
+      const test = line + words[n] + ' ';
+      if(ctx.measureText(test).width > maxW && n>0){
+        ctx.fillText(line.trim(), cx, y); y += lineH; line = words[n] + ' ';
+      }else line = test;
+    }
+    ctx.fillText(line.trim(), cx, y);
+  }
+
+  drawMeme();
+  $('#newMeme').addEventListener('click', ()=>{ drawMeme(); heartBurst($('#newMeme')); });
+  $('#downloadMeme').addEventListener('click', ()=>{
+    const a = document.createElement('a'); a.download='pookie-meme.png';
+    a.href = canvas.toDataURL('image/png'); a.click(); heartBurst($('#downloadMeme'));
+  });
+})();
+
+/* ===========================
+   Music Autoplay (starts on first interaction)
+=========================== */
+(() => {
+  const audio = $('#bgm');
+  const btn = $('#toggleAudio');
+  let started = false;
+
+  async function tryPlay(){
+    try{ await audio.play(); return true; }catch(e){ return false; }
+  }
+  function setBtn(){
+    btn.textContent = audio.paused ? '▶ Play' : '⏸ Pause';
+  }
+  const userStart = async ()=>{
+    if(!started){
+      audio.volume = 0.7;
+      const ok = await tryPlay();
+      started = true;
+      if(!ok){
+        // Autoplay blocked: keep as manual.
+      }
+      setBtn();
+      window.removeEventListener('pointerdown', userStart);
+    }
+  };
+  window.addEventListener('pointerdown', userStart, {once:true, passive:true});
+
+  btn.addEventListener('click', async ()=>{
+    if(audio.paused){ await tryPlay(); } else { audio.pause(); }
+    setBtn();
+    heartBurst(btn);
+  });
+})();
+
+</script>
+</body>
+</html>
